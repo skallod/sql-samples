@@ -20,8 +20,42 @@
 --select book_ref, dense_rank() over (partition by book_ref order by passenger_id) from tickets order by dense_rank desc limit 10; good
 -- select * from tickets where book_ref='027B0C';
 
+SELECT tt.cnt, count(*)
+FROM (
+  SELECT count(*) cnt
+  FROM tickets t
+  GROUP BY t.book_ref
+) tt
+GROUP BY tt.cnt
+ORDER bY tt.cnt;
+
 -- до каких городов нельзя добраться из москвы без пересадок
-select distinct (departure_city) from routes where departure_city
-    not in (select departure_city from routes where arrival_city='Москва') and departure_city<>'Москва';
+select distinct (arrival_city) from routes where arrival_city
+    not in (select distinct (arrival_city) from routes where departure_city = 'Москва') and arrival_city<>'Москва';
+select distinct (arrival_city) from routes except (select distinct (arrival_city) from routes where departure_city = 'Москва');
+--Модель самолета выполняет больше всего рейсов ? меньше всего ?
+select a.model, count(f.aircraft_code) from flights f, aircrafts a where f.aircraft_code=a.aircraft_code group by a.model order by count(a.model);
+SELECT a.model, f.cnt
+FROM aircrafts a
+  LEFT JOIN (
+    SELECT f.aircraft_code, count(*) cnt
+    FROM flights f
+    GROUP BY f.aircraft_code
+  ) f
+  ON f.aircraft_code = a.aircraft_code
+ORDER BY cnt DESC NULLS LAST;
+--Какая модель перевозит больше всего пассажиров ?
+select a.model , sg.cnt from aircrafts a
+left join(
+ select s.aircraft_code, count(*) as cnt from seats s group by s.aircraft_code
+) sg on a.aircraft_code = sg.aircraft_code
+order by cnt;
+ SELECT a.model, count(*) cnt
+FROM flights f, boarding_passes bp, aircrafts a
+WHERE bp.flight_id = f.flight_id AND a.aircraft_code = f.aircraft_code
+GROUP BY a.model
+ORDER BY count(*) DESC;
+--https://postgrespro.ru/docs/postgrespro/10/apjs04.html#id-1.11.11.11.14 - описание представлений
+
 
 

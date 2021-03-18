@@ -35,3 +35,19 @@ grant dummyreplrole1 to dummy_replication1;
 create user dummy_replication_ms1 with password 'dummy_replication_ms';
 grant dummy_replication1 to dummy_replication_ms1;
 ALTER DATABASE dummyrepldb SET search_path TO dummy_replication;
+
+show enable_partition_pruning;
+show constraint_exclusion;
+
+-- tested on project SR, working 
+CREATE USER dummy WITH password 'dummy';
+CREATE USER dummy_ms WITH password 'dummy_ms';
+CREATE SCHEMA IF NOT EXISTS dummy AUTHORIZATION dummy;
+GRANT ALL PRIVILEGES ON SCHEMA dummy TO dummy;
+GRANT USAGE ON SCHEMA dummy TO dummy_ms;
+ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT SELECT,INSERT,UPDATE,DELETE,TRUNCATE ON TABLES TO dummy_ms;
+ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT USAGE ON SEQUENCES TO dummy_ms;
+ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT EXECUTE ON FUNCTIONS  TO dummy_ms;
+GRANT dummy TO dummy_ms;
+ALTER USER dummy set search_path to dummy;
+ALTER USER dummy_ms set search_path to dummy;

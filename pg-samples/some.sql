@@ -32,6 +32,7 @@ datname - название БД
 select query, state, wait_event_type,wait_event, pid from pg_stat_activity where query like '%insert%' and not (state = 'idle' or pid = pg_backend_pid());
 select query, state, wait, pid, xact_start,query_start,datname from pg_stat_activity;
 select query, state, wait_event_type,wait_event, pid, xact_start,query_start,datname from pg_stat_activity;
+select query, state, wait_event_type,wait_event, pid, xact_start,query_start,datname,usename,application_name,client_addr from pg_stat_activity;
 
 ------------deadlock
 db1=# begin;

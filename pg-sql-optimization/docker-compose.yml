@@ -11,12 +11,13 @@ services:
     ports:
       - 25432:5432
     environment:
-#      - POSTGRES_PASSWORD=airpass
-#      - POSTGRES_USER=airuser
-#      - POSTGRES_DB=demo
+      - POSTGRES_PASSWORD=airpass
+      - POSTGRES_USER=airuser
+      - POSTGRES_DB=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ~/Downloadsc:/docker-entrypoint-initdb.d/psql-dump.sql
+      - c:\Users\lgaluzin\Downloads\demo-big:/tmp
+#      - c:\Users\lgaluzin\Downloads\demo-big:/docker-entrypoint-initdb.d
 
 networks:
   postgres-qpt:
