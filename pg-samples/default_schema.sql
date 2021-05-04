@@ -39,7 +39,7 @@ ALTER DATABASE dummyrepldb SET search_path TO dummy_replication;
 show enable_partition_pruning;
 show constraint_exclusion;
 
--- tested on project SR, working 
+-- tested on project SR, not working - при повторном запуске ливибейз не может взять лок, т.к. таблица owner=dummy_ms
 CREATE USER dummy WITH password 'dummy';
 CREATE USER dummy_ms WITH password 'dummy_ms';
 CREATE SCHEMA IF NOT EXISTS dummy AUTHORIZATION dummy;
@@ -49,5 +49,17 @@ ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT SELECT,INSERT,UPDA
 ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT USAGE ON SEQUENCES TO dummy_ms;
 ALTER DEFAULT PRIVILEGES FOR USER dummy IN SCHEMA dummy GRANT EXECUTE ON FUNCTIONS  TO dummy_ms;
 GRANT dummy TO dummy_ms;
+ALTER USER dummy set search_path to dummy;
+ALTER USER dummy_ms set search_path to dummy;
+
+select * from pg_tables where tablename = 'databasechangeloglock';
+
+-- test, working
+CREATE USER dummy WITH password 'dummy';
+CREATE USER dummy_ms WITH password 'dummy_ms';
+create schema dummy authorization dummy;
+grant all privileges on schema dummy to dummy;
+alter default privileges in schema dummy grant all privileges on tables to dummy;
+grant dummy to dummy_ms;
 ALTER USER dummy set search_path to dummy;
 ALTER USER dummy_ms set search_path to dummy;
