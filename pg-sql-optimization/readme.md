@@ -12,9 +12,16 @@ another string`
 **check bold.  
 bold finish**
 
-Загрузка базы из файла  
-psql -U airuser -d postgres -a -f /tmp/big-demo.sql
-
 docker start 144
-psql -U airuser -d demo
+  
+запускаю docker-compose up  
+подключаюсь к контейнеру [root]  
+su -c psql airuser  
+No passwd entry .. airuser  
+adduser airuser  
+su -c "psql -d postgres" airuser  
 
+Рабочие команды:  
+Загрузка базы из файла  
+psql -U airuser -d postgres -a -f /tmp/demo-big.sql
+psql -U airuser -d demo

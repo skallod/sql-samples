@@ -16,7 +16,7 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - c:\Users\lgaluzin\Downloads\demo-big:/tmp
+      - c:\Users\lgaluzin\docker_shared\demo-big:/tmp
 #      - c:\Users\lgaluzin\Downloads\demo-big:/docker-entrypoint-initdb.d
 
 networks:
